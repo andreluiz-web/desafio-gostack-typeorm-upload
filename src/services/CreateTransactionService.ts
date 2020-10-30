@@ -1,10 +1,33 @@
+import { getRepository } from 'typeorm';
 // import AppError from '../errors/AppError';
-
 import Transaction from '../models/Transaction';
 
+interface RequestDTO {
+  title: string;
+  value: number;
+  type: 'income' | 'outcome';
+  category_id: string;
+}
+
 class CreateTransactionService {
-  public async execute(): Promise<Transaction> {
-    // TODO
+  public async execute({
+    title,
+    value,
+    type,
+    category_id,
+  }: RequestDTO): Promise<Transaction> {
+    const transactionRepository = getRepository(Transaction);
+
+    const transaction = transactionRepository.create({
+      title,
+      value,
+      type,
+      category_id,
+    });
+
+    await transactionRepository.save(transaction);
+
+    return transaction;
   }
 }
 
