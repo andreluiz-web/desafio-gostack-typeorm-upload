@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('categories')
 class Category {
@@ -8,10 +14,10 @@ class Category {
   @Column()
   title: string;
 
-  @Column('timestamp')
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column('timestamp')
+  @UpdateDateColumn()
   updated_at: Date;
 }
 

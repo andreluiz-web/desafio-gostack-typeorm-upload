@@ -6,7 +6,7 @@ interface RequestDTO {
   title: string;
   value: number;
   type: 'income' | 'outcome';
-  category_id: string;
+  category: string;
 }
 
 class CreateTransactionService {
@@ -14,7 +14,7 @@ class CreateTransactionService {
     title,
     value,
     type,
-    category_id,
+    category,
   }: RequestDTO): Promise<Transaction> {
     const transactionRepository = getRepository(Transaction);
 
@@ -22,7 +22,7 @@ class CreateTransactionService {
       title,
       value,
       type,
-      category_id,
+      category,
     });
 
     await transactionRepository.save(transaction);

@@ -1,4 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+
+import Category from './Category';
 
 Entity('transactions');
 class Transaction {
@@ -17,10 +27,14 @@ class Transaction {
   @Column()
   category_id: string;
 
-  @Column('timestamp')
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: string;
+
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column('timestamp')
+  @UpdateDateColumn()
   updated_at: Date;
 }
 
