@@ -1,6 +1,7 @@
-import { getRepository } from 'typeorm';
-// import AppError from '../errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import AppError from '../errors/AppError';
 import Transaction from '../models/Transaction';
+import TransactionRepository from '../repositories/TransactionsRepository';
 
 interface RequestDTO {
   title: string;
@@ -16,16 +17,22 @@ class CreateTransactionService {
     type,
     category,
   }: RequestDTO): Promise<Transaction> {
-    const transactionRepository = getRepository(Transaction);
+    const transactionRepo = getCustomRepository(TransactionRepository);
 
-    const transaction = transactionRepository.create({
+    const { total } = await transactionRepo.getBalance();
+
+    if (type === 'outcome' && total < value) {
+      throw new AppError('You do not enought value in your balance');
+    }
+
+    const transaction = transactionRepo.create({
       title,
       value,
       type,
       category,
     });
 
-    await transactionRepository.save(transaction);
+    await transactionRepo.save(transaction);
 
     return transaction;
   }

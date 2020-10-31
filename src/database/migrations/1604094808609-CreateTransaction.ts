@@ -12,19 +12,19 @@ export default class CreateTransaction1604094808609
             type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
-            default: 'generate_uuid_v4()',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'title',
-            type: 'string',
+            type: 'varchar',
           },
           {
             name: 'type',
-            type: 'string',
+            type: 'varchar',
           },
           {
             name: 'value',
-            type: 'number',
+            type: 'float',
           },
           {
             name: 'category_id',

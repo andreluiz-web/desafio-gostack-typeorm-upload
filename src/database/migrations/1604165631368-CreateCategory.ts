@@ -15,7 +15,7 @@ export default class CreateCategory1604165631368 implements MigrationInterface {
           },
           {
             name: 'title',
-            type: 'string',
+            type: 'varchar',
           },
           {
             name: 'created_at',
@@ -32,5 +32,7 @@ export default class CreateCategory1604165631368 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('categories');
+  }
 }
