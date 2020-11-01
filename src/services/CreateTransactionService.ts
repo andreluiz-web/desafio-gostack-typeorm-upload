@@ -1,5 +1,6 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, getRepository } from 'typeorm';
 import AppError from '../errors/AppError';
+import Category from '../models/Category';
 import Transaction from '../models/Transaction';
 import TransactionRepository from '../repositories/TransactionsRepository';
 
@@ -18,6 +19,22 @@ class CreateTransactionService {
     category,
   }: RequestDTO): Promise<Transaction> {
     const transactionRepo = getCustomRepository(TransactionRepository);
+    const categoryRepo = getRepository(Category);
+
+    // verifica se a categoria ja existe
+    let findedCategory = await categoryRepo.findOne({
+      where: {
+        title: category,
+      },
+    });
+
+    if (!findedCategory) {
+      findedCategory = categoryRepo.create({
+        title: category,
+      });
+
+      await categoryRepo.save(findedCategory);
+    }
 
     const { total } = await transactionRepo.getBalance();
 
@@ -29,7 +46,7 @@ class CreateTransactionService {
       title,
       value,
       type,
-      category,
+      category: findedCategory,
     });
 
     await transactionRepo.save(transaction);
